@@ -14,32 +14,61 @@ class _NewAccount extends State<NewAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Enter your email:'),
-            TextField(
-              style: TextStyle(color: Colors.white),
-              cursorColor: Color.fromARGB(255, 255, 255, 255),
-              onChanged: (value) {
-                email = value;
-              },
-            ),
-            TextField(
-              style: TextStyle(color: Colors.white),
-              cursorColor: Color.fromARGB(255, 255, 255, 255),
-              onChanged: (value) {
-                password = value;
-              },
-            )
-          ],
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
         ),
-      ),
-    );
+        body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 40),
+                Text("Enter your email:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          child: TextField(
+            textAlign: TextAlign.center,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              hintText: 'Email',
+            ),
+          ),
+        ),
+                SizedBox(height: 40),
+                Text('Enter your password:',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          child: TextField(
+            textAlign: TextAlign.center,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              hintText: 'Password',
+            ),
+          ),
+        ),
+                SizedBox(height: 30),
+                ElevatedButton(
+                  child: Text('Submit',
+                      style: TextStyle(
+                        fontSize: 20,
+                      )),
+                  onPressed: () {
+
+
+                    //check to see if credentials match database
+                  },
+                ),
+              ]),
+        ));
   }
 }
