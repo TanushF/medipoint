@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'databasehelper.dart';
 import 'patient.dart';
-import 'schedulepage.dart';
-import 'loginError.dart';
 
-class LogIn extends StatefulWidget {
-  const LogIn({super.key, required this.title});
+class LogInError extends StatefulWidget {
+  const LogInError({super.key, required this.title});
   final String title;
 
   @override
-  State<LogIn> createState() => _Login();
+  State<LogInError> createState() => _LoginError();
 }
 
-class _Login extends State<LogIn> {
+class _LoginError extends State<LogInError> {
   String inputEmail = '';
   String inputPassword = '';
 
@@ -100,24 +98,10 @@ class _Login extends State<LogIn> {
                     print(dbHelper.loginPatient('email', 'password'));
                     int response =
                         dbHelper.loginPatient(inputEmail, inputPassword);
-                    Patient patient =
-                        dbHelper.getPatient(inputEmail, inputPassword);
                     if (response != -1) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SchedulePage(patient: patient)),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const LogInError(patient: patient)),
-                      );
+                      Patient patient =
+                          dbHelper.getPatient(inputEmail, inputPassword);
                     }
-
                     //Check to see if credentials match database
                   },
                 ),

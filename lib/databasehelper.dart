@@ -41,7 +41,7 @@ class DatabaseHelper {
         value.forEach(
           (element) {
             if (element.email == patient.email) {
-              // something that denies request, sends error message
+              return await 0;
             }
           },
         );
@@ -66,6 +66,8 @@ class DatabaseHelper {
     return queryResult.map((e) => Patient.fromMap(e)).toList();
   }
 
+
+
   Future<void> deletePatient(int id) async {
     await db.delete(
       'patients',
@@ -74,6 +76,23 @@ class DatabaseHelper {
     );
   }
 
+  Patient getPatient(String email, String password){
+    Patient patient = new Patient(name: '', email: '', password:'');
+    this.retrievePatients().then(
+      (value) {
+        value.forEach(
+          (element) {
+            if (element.email == email && element.password == password) {
+              patient = element;
+            }
+          },
+        );
+      },
+    );
+    return patient;
+  }
+
+  
   int loginPatient(String email, String password) {
     int a = -1;
     this.retrievePatients().then(

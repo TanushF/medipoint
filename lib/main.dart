@@ -43,9 +43,7 @@ class _MyAppState extends State<MyApp> {
         );
   }
 
-  Future<void> login(String email, String password) async {
-    int succcess = loginPatient(email, password)
-  }
+  Future<void> login(String email, String password) async {}
 }
 
 class HomePage extends StatelessWidget {
