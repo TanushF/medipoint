@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:path/path.dart';
 import 'main.dart';
+import 'package:sqflite/sqflite.dart';
+import 'patient.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _databaseHelper = DatabaseHelper._();
@@ -16,15 +18,15 @@ class DatabaseHelper {
   Future<void> initDB() async {
     String path = await getDatabasesPath();
     db = await openDatabase(
-      join(path, 'users_demo.db'),
+      join(path, 'medipoint.db'),
       onCreate: (database, version) async {
         await database.execute(
           """
-            CREATE TABLE users (
+            CREATE TABLE patients (
               id INTEGER PRIMARY KEY AUTOINCREMENT, 
-              name TEXT NOT NULL,
-              age INTEGER NOT NULL, 
-              email TEXT NOT NULL
+              name TEXT NOT NULL, 
+              email TEXT NOT NULL,
+              password TEXT NOT NULL
             )
           """,
         );
@@ -33,31 +35,47 @@ class DatabaseHelper {
     );
   }
 
-  Future<int> insertUser(User user) async {
-    int result = await db.insert('users', user.toMap());
+  Future<int> insertPatient(Patient patient) async {
+    int result = await db.insert('patients', patient.toMap());
     return result;
   }
 
-  Future<int> updateUser(User user) async {
+  Future<int> updatePatient(Patient patient) async {
     int result = await db.update(
-      'users',
-      user.toMap(),
+      'patients',
+      patient.toMap(),
       where: "id = ?",
-      whereArgs: [user.id],
+      whereArgs: [patient.id],
     );
     return result;
   }
 
-  Future<List<User>> retrieveUsers() async {
-    final List<Map<String, Object?>> queryResult = await db.query('users');
-    return queryResult.map((e) => User.fromMap(e)).toList();
+  Future<List<Patient>> retrievePatients() async {
+    final List<Map<String, Object?>> queryResult = await db.query('patients');
+    return queryResult.map((e) => Patient.fromMap(e)).toList();
   }
 
-  Future<void> deleteUser(int id) async {
+  Future<void> deletePatient(int id) async {
     await db.delete(
-      'users',
+      'patients',
       where: "id = ?",
       whereArgs: [id],
     );
+  }
+
+  int loginPatient(String email, String password) {
+    int a = -1;
+    this.retrievePatients().then(
+      (value) {
+        value.forEach(
+          (element) {
+            if (element.email == email && element.password == password) {
+              a = element.id!;
+            }
+          },
+        );
+      },
+    );
+    return a;
   }
 }

@@ -2,29 +2,50 @@ import 'package:flutter/material.dart';
 import 'newaccount.dart';
 import 'login.dart';
 import 'schedule.dart';
+import 'databasehelper.dart';
+import 'patient.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late DatabaseHelper dbHelper;
+  void initState() {
+    super.initState();
+    this.dbHelper = DatabaseHelper();
+    this.dbHelper.initDB().whenComplete(() async {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Medipoint App',
       home: HomePage(),
-      
     );
   }
-}
 
-Future<void> createNewAccount(String email, String password) async {
-  // here we need to have the backend set up a new account with the new email and password
-}
+  Future<void> createNewAccount(String email, String password) async {
+    Patient newPatient =
+        Patient(name: 'sample patient', email: 'email', password: 'password');
+    dbHelper.insertPatient(newPatient).then(
+          (value) => print(value),
+        );
+  }
 
-Future<void> login(String email, String password) async {
-  //here we need to check if the email matches the password
+  Future<void> login(String email, String password) async {
+    //here we need to check if the email matches the password
+  }
 }
 
 class HomePage extends StatelessWidget {
@@ -70,8 +91,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const SchedulePage(email: 'email')),
+                      builder: (context) => const SchedulePage(email: 'email')),
                 );
               },
               child: Text('Schedule'),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'databasehelper.dart';
+import 'patient.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key, required this.title});
@@ -28,6 +30,16 @@ class _Login extends State<LogIn> {
       }
   */
   }
+
+  late DatabaseHelper dbHelper;
+  void initState() {
+    super.initState();
+    this.dbHelper = DatabaseHelper();
+    this.dbHelper.initDB().whenComplete(() async {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,15 +59,16 @@ class _Login extends State<LogIn> {
                       fontWeight: FontWeight.bold,
                     )),
                 Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: TextField(
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Email',
-            ),
-          ),
-        ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      hintText: 'Email',
+                    ),
+                  ),
+                ),
                 SizedBox(height: 40),
                 Text('Enter your password:',
                     style: TextStyle(
@@ -64,15 +77,16 @@ class _Login extends State<LogIn> {
                       fontWeight: FontWeight.bold,
                     )),
                 Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: TextField(
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Password',
-            ),
-          ),
-        ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      hintText: 'Password',
+                    ),
+                  ),
+                ),
                 SizedBox(height: 30),
                 ElevatedButton(
                   child: Text('Submit',
@@ -80,6 +94,7 @@ class _Login extends State<LogIn> {
                         fontSize: 20,
                       )),
                   onPressed: () {
+                    print(dbHelper.loginPatient('email', 'password'));
 
                     //Check to see if credentials match database
                   },

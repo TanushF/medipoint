@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'databasehelper.dart';
+import 'patient.dart';
 
 class NewAccount extends StatefulWidget {
   const NewAccount({super.key, required this.title});
@@ -9,6 +11,15 @@ class NewAccount extends StatefulWidget {
 }
 
 class _NewAccount extends State<NewAccount> {
+  late DatabaseHelper dbHelper;
+  void initState() {
+    super.initState();
+    this.dbHelper = DatabaseHelper();
+    this.dbHelper.initDB().whenComplete(() async {
+      setState(() {});
+    });
+  }
+
   String email = '';
   String password = '';
   @override
@@ -30,15 +41,16 @@ class _NewAccount extends State<NewAccount> {
                       fontWeight: FontWeight.bold,
                     )),
                 Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: TextField(
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Email',
-            ),
-          ),
-        ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      hintText: 'Email',
+                    ),
+                  ),
+                ),
                 SizedBox(height: 40),
                 Text('Enter your password:',
                     style: TextStyle(
@@ -47,15 +59,16 @@ class _NewAccount extends State<NewAccount> {
                       fontWeight: FontWeight.bold,
                     )),
                 Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: TextField(
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Password',
-            ),
-          ),
-        ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      hintText: 'Password',
+                    ),
+                  ),
+                ),
                 SizedBox(height: 30),
                 ElevatedButton(
                   child: Text('Submit',
@@ -63,7 +76,15 @@ class _NewAccount extends State<NewAccount> {
                         fontSize: 20,
                       )),
                   onPressed: () {
-
+                    // Patient newPatient = Patient(
+                    //     name: 'sample patient',
+                    //     email: email,
+                    //     password: password);
+                    // dbHelper.retrievePatients().then(
+                    //       (value) => value.forEach((e) => print(e.toMap())),
+                    //     );
+                    dbHelper.insertPatient(Patient(
+                        name: ' ', email: 'email', password: 'password'));
 
                     //check to see if credentials match database
                   },
