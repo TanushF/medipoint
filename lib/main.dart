@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'newaccount.dart';
 import 'login.dart';
+import 'schedule.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,8 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Medipoint App',
       home: HomePage(),
+      
     );
   }
 }
@@ -30,6 +33,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome User'),
+        backgroundColor: Colors.lightBlue,
       ),
       body: Center(
         child: Column(
@@ -58,6 +62,19 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: Text('Create New Account'),
+            ),
+            //TEMPORARY - just for testing the schedule widget
+            ElevatedButton(
+              onPressed: () {
+                // make a script there that goes to the crete accoutn part
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const SchedulePage(email: 'email')),
+                );
+              },
+              child: Text('Schedule'),
             ),
           ],
         ),
