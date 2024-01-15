@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'databasehelper.dart';
 import 'patient.dart';
+import 'schedulepage.dart';
 
 class NewAccount extends StatefulWidget {
   const NewAccount({super.key, required this.title});
@@ -20,8 +21,9 @@ class _NewAccount extends State<NewAccount> {
     });
   }
 
-  String email = '';
-  String password = '';
+  String userName = '';
+  String userEmail = '';
+  String userPassword = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +36,25 @@ class _NewAccount extends State<NewAccount> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 40),
+                Text("Enter your name:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    onChanged: (value) => userName = value,
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      hintText: 'Name',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 40),
                 Text("Enter your email:",
                     style: TextStyle(
                       fontSize: 16,
@@ -44,6 +65,7 @@ class _NewAccount extends State<NewAccount> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: TextField(
+                    onChanged: (value) => userEmail = value,
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -62,11 +84,15 @@ class _NewAccount extends State<NewAccount> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: TextField(
+                    onChanged: (value) => userPassword = value,
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      hintText: 'Password',
-                    ),
+                        border: UnderlineInputBorder(),
+                        hintText: 'Password',
+                        icon: const Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: const Icon(Icons.lock),
+                        )),
                   ),
                 ),
                 SizedBox(height: 30),
@@ -83,8 +109,21 @@ class _NewAccount extends State<NewAccount> {
                     // dbHelper.retrievePatients().then(
                     //       (value) => value.forEach((e) => print(e.toMap())),
                     //     );
-                    dbHelper.insertPatient(Patient(
-                        name: ' ', email: 'email', password: 'password'));
+                    Patient newPatient = Patient(
+                        name: userName,
+                        email: userEmail,
+                        password: userPassword);
+                    dbHelper.insertPatient(newPatient);
+
+                    dbHelper.retrievePatients().then(
+                          (value) => value.forEach((e) => print(e.toMap())),
+                        );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SchedulePage(patient: newPatient),
+                        ));
 
                     //check to see if credentials match database
                   },

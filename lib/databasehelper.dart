@@ -36,6 +36,17 @@ class DatabaseHelper {
   }
 
   Future<int> insertPatient(Patient patient) async {
+    this.retrievePatients().then(
+      (value) {
+        value.forEach(
+          (element) {
+            if (element.email == patient.email) {
+              // something that denies request, sends error message
+            }
+          },
+        );
+      },
+    );
     int result = await db.insert('patients', patient.toMap());
     return result;
   }

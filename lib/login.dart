@@ -11,8 +11,8 @@ class LogIn extends StatefulWidget {
 }
 
 class _Login extends State<LogIn> {
-  String email = '';
-  String password = '';
+  String inputEmail = '';
+  String inputPassword = '';
 
   Future<void> checkCredentials() async {
     /*here check in the backend if email and password matches
@@ -62,6 +62,7 @@ class _Login extends State<LogIn> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: TextField(
+                    onChanged: (value) => inputEmail = value,
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),

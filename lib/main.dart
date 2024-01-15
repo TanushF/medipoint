@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'newaccount.dart';
 import 'login.dart';
-import 'schedule.dart';
+import 'schedulepage.dart';
 import 'databasehelper.dart';
 import 'patient.dart';
 
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> login(String email, String password) async {
-    //here we need to check if the email matches the password
+    int succcess = loginPatient(email, password)
   }
 }
 
@@ -83,18 +83,6 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: Text('Create New Account'),
-            ),
-            //TEMPORARY - just for testing the schedule widget
-            ElevatedButton(
-              onPressed: () {
-                // make a script there that goes to the crete accoutn part
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SchedulePage(email: 'email')),
-                );
-              },
-              child: Text('Schedule'),
             ),
           ],
         ),
