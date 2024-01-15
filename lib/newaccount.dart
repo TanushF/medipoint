@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'databasehelper.dart';
+import 'userhelper.dart';
 import 'patient.dart';
 import 'schedulepage.dart';
 
@@ -113,7 +113,18 @@ class _NewAccount extends State<NewAccount> {
                         name: userName,
                         email: userEmail,
                         password: userPassword);
-                    dbHelper.insertPatient(newPatient);
+                    try {
+                      dbHelper.insertPatient(newPatient).then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SchedulePage(patient: newPatient),
+                            ));
+                      });
+                    } catch (e, s) {
+                      print(e);
+                    }
 
                     dbHelper.retrievePatients().then(
                           (value) => value.forEach((e) => print(e.toMap())),

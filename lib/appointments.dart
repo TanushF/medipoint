@@ -1,20 +1,20 @@
 import 'patient.dart';
 
-class Schedule {
+class Appointment {
   int? id; //needed?
   bool isAvailable = true;
-  Patient patient;
+  int patient;
   int startTime;
   int endTime;
 
-  Schedule(
+  Appointment(
       {this.id,
       required this.isAvailable,
       required this.patient,
       required this.startTime,
       required this.endTime});
 
-  Schedule.fromMap(Map<String, dynamic> res)
+  Appointment.fromMap(Map<String, dynamic> res)
       : id = res["id"],
         isAvailable = res["isAvailable"],
         patient = res["patient"],

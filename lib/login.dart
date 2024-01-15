@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'databasehelper.dart';
+import 'userhelper.dart';
 import 'patient.dart';
 import 'schedulepage.dart';
 import 'loginError.dart';
@@ -113,8 +113,7 @@ class _Login extends State<LogIn> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const LogInError(patient: patient)),
+                            builder: (context) => const LogInError(title: '')),
                       );
                     }
 
