@@ -3,35 +3,15 @@ import 'userhelper.dart';
 import 'patient.dart';
 import 'schedulepage.dart';
 
-class LogInError extends StatefulWidget {
-  const LogInError({super.key, required this.title});
+class NewAccountError extends StatefulWidget {
+  const NewAccountError({super.key, required this.title});
   final String title;
 
   @override
-  State<LogInError> createState() => _LoginError();
+  State<NewAccountError> createState() => _NewAccounError();
 }
 
-class _LoginError extends State<LogInError> {
-  String inputEmail = '';
-  String inputPassword = '';
-
-  Future<void> checkCredentials() async {
-    /*here check in the backend if email and password matches
-
-      if (response == success){
-        Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SchedulePage(email: email)),
-
-      else{
-        return)("Invalid Password. Try Again")
-      }
-    );
-        
-      }
-  */
-  }
-
+class _NewAccounError extends State<NewAccountError> {
   late DatabaseHelper dbHelper;
   void initState() {
     super.initState();
@@ -41,6 +21,9 @@ class _LoginError extends State<LogInError> {
     });
   }
 
+  String userName = '';
+  String userEmail = '';
+  String userPassword = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,12 +36,32 @@ class _LoginError extends State<LogInError> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 40),
-                Text("ERROR - Account Not Found, Please try again!",
+                Text("ERROR - Email already in use! Please try again.",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
+                SizedBox(height: 40),
+                SizedBox(height: 40),
+                Text("Enter your name:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    onChanged: (value) => userName = value,
+                    textAlign: TextAlign.center,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      hintText: 'Name',
+                    ),
+                  ),
+                ),
                 SizedBox(height: 40),
                 Text("Enter your email:",
                     style: TextStyle(
@@ -70,7 +73,7 @@ class _LoginError extends State<LogInError> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: TextField(
-                    onChanged: (value) => inputEmail = value,
+                    onChanged: (value) => userEmail = value,
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -89,11 +92,15 @@ class _LoginError extends State<LogInError> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: TextField(
+                    onChanged: (value) => userPassword = value,
                     textAlign: TextAlign.center,
                     decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      hintText: 'Password',
-                    ),
+                        border: UnderlineInputBorder(),
+                        hintText: 'Password',
+                        icon: const Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: const Icon(Icons.lock),
+                        )),
                   ),
                 ),
                 SizedBox(height: 30),
@@ -103,27 +110,39 @@ class _LoginError extends State<LogInError> {
                         fontSize: 20,
                       )),
                   onPressed: () {
-                    print(dbHelper.loginPatient('email', 'password'));
-                    int response =
-                        dbHelper.loginPatient(inputEmail, inputPassword);
-                    Patient patient =
-                        dbHelper.getPatient(inputEmail, inputPassword);
-                    if (response == -1) {
+                    // Patient newPatient = Patient(
+                    //     name: 'sample patient',
+                    //     email: email,
+                    //     password: password);
+                    // dbHelper.retrievePatients().then(
+                    //       (value) => value.forEach((e) => print(e.toMap())),
+                    //     );
+                    if (dbHelper.loginPatient(userEmail, userPassword) != -1) {
+                      Patient newPatient = Patient(
+                          name: userName,
+                          email: userEmail,
+                          password: userPassword);
+                      dbHelper.insertPatient(newPatient);
+
+                      dbHelper.retrievePatients().then(
+                            (value) => value.forEach((e) => print(e.toMap())),
+                          );
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
+                          context,
+                          MaterialPageRoute(
                             builder: (context) =>
-                                SchedulePage(patient: patient)),
-                      );
+                                SchedulePage(patient: newPatient),
+                          ));
                     } else {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LogInError(title: '')),
+                            builder: (context) =>
+                                const NewAccountError(title: '')),
                       );
                     }
 
-                    //Check to see if credentials match database
+                    //check to see if credentials match database
                   },
                 ),
               ]),
